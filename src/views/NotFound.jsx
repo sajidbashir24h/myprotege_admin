@@ -1,7 +1,17 @@
-import React from 'react';
+import React, {useState,useEffect} from 'react';
 import {Link} from 'react-router-dom'
+import store from "../store";
 
 const NotFound = () => {
+
+    const [posts, setPosts] = useState([]);
+
+    useEffect(() => {
+        store.api.post.fetch().then((response) => {
+           setPosts(response.data);
+        });
+     }, []);
+
     return (
         <div
         className="error-page-content d-flex align-items-center justify-content-center">
@@ -12,6 +22,11 @@ const NotFound = () => {
                     <p className="me-xxl-5 ms-xxl-5">Can not find what you need? Take a moment and
                         do a search below or start from our Homepage.</p>
                     <Link to="/" className="btn-eight">Back to home</Link>
+                    {
+                        posts.map((post)=>{
+                            return <p>{post.title}</p>
+                        })
+                    }
                 </div>
             </div>
             <img src="images/assets/ils_21.svg" alt="" className="m-auto"/>
